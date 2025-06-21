@@ -36,6 +36,7 @@ config_table = {
 	UI_Follows_View =true,
 	DarkerDarks=false,
 	RadialQuickMenu=true,
+    ManageLighting=true,
 	--HandIndex=2
 	--isRhand = true	
 }
@@ -76,6 +77,7 @@ MeleePower = config_table.Melee_Power
 ReticleAlwaysOn = config_table.ReticleAlwaysOn
 UIFollowsView = config_table.UI_Follows_View
 DarkerDarks=config_table.DarkerDarks
+ManageLighting=config_table.ManageLighting
 RadialQuickMenu=config_table.RadialQuickMenu
 --isRhand = config_table.isRhand
 
@@ -171,6 +173,7 @@ uevr.sdk.callbacks.on_draw_ui(function()
 
     imgui.text("Features")
 	
+    -- Create options for the 'Script UI' section in the UEVR settings menu
 	UIFollowsView = create_checkbox("UI Follows View", "UI_Follows_View")
 	RadialQuickMenu = create_checkbox("Motion Controlled Radial Quick Menu", "RadialQuickMenu")
     Enable_Lumen_Indoors = create_checkbox("Enable Lumen Indoors", "Enable_Lumen_Indoors")
@@ -180,9 +183,9 @@ uevr.sdk.callbacks.on_draw_ui(function()
     HapticFeedback = create_checkbox("Holster Haptic Feedback", "Holster_Haptic_Feedback")
     FirstPersonRiding = create_checkbox("First Person Horse Riding", "First_Person_Riding")
     SwordSidewaysIsBlock = create_checkbox("Hold Sword Sideways To Block", "Sword_Sideways_Is_Block")
-  
 	--isRhand = create_checkbox("Right Hand Mode", "isRhand")
-	DarkerDarks=create_checkbox("Darker interiors and nights", "DarkerDarks") 
+	DarkerDarks=create_checkbox("Darker interiors and nights (Requires: Manage lighting checked)", "DarkerDarks") 
+    ManageLighting=create_checkbox("Manage lighting (Restart required on uncheck)", "ManageLighting") 
 	ExtraBlockRange = create_slider_int("Extra Block Range (in cm)", "Extra_Block_Range", 0, 50)
     MeleePower = create_slider_int("Melee Power (swing intensity)", "Melee_Power", 0, 1500)
 end)
