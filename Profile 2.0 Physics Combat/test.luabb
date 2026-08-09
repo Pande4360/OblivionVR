@@ -1,0 +1,38 @@
+local api = uevr.api
+local vr = uevr.params.vr
+--local utils=require(".\\libs\\uevr_utils")
+
+function find_required_object(name)
+    local obj = uevr.api:find_uobject(name)
+    if not obj then
+        error("Cannot find " .. name)
+        return nil
+    end
+
+    return obj
+end
+
+local player= api:get_player_controller(0)
+local pawn= api:get_local_pawn(0)
+local  hitresult_c = find_required_object("ScriptStruct /Script/Engine.HitResult")
+local DmgType_c=find_required_object("BlueprintGeneratedClass /Engine/EngineDamageTypes/DmgTypeBP_Environmental.DmgTypeBP_Environmental_C")
+local LocVec1 = Vector3f.new(0, 0, 0)
+local LocVec2 = Vector3f.new(0, 0, 0)
+local LocVec3 = pawn:GetActorForwardVector()
+local LocVec4 = pawn:K2_GetActorLocation()
+
+local reusable_hit_result = StructObject.new(hitresult_c)
+
+
+
+
+pawn:ReceivePointDamage(1022,DmgType_c,LocVec3,LocVec2,reusable_hit_result.Component,reusable_hit_result.BoneName, LocVec3, pawn, pawn,reusable_hit_result)--,nil,reusable_hit_result.HitLocation,reusable_hit_result.HitNormal,reusable_hit_result.HitComponent,reusable_hit_result.BoneName,LocVec3,nil,nil)
+pawn:ReceiveAnyDamage(100, DmgType_c, nil,nil)
+
+
+
+uevr.sdk.callbacks.on_pre_engine_tick(
+function(engine, delta)
+pawn.Mesh:AddImpulseToAllBodiesBelow(LocVec3,"Root",true,true)
+pawn:AddMovementInput(LocVec3,0.7,true)
+end)
