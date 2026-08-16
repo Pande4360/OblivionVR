@@ -177,13 +177,15 @@ function UpdateCameraManager(pawn,player)
 		if not isSprinting then
 			LeftRightScaleFactor= ThumbLX/32767		
 			ForwardBackwardScaleFactor = ThumbLY/32767
+			--pawn.Controller.ControlRotation.Yaw = hmd_component:K2_GetComponentRotation().Yaw
+			--vr.recenter_view()
 			if HeadBasedMovement and hmd_component~=nil then
 				--HandVector= right_hand_component:GetForwardVector()
 				hmd_component:GetForwardVector()
 								
 				pawn:AddMovementInput(hmd_component:GetForwardVector(),ForwardBackwardScaleFactor,true)
 				pawn:AddMovementInput(hmd_component:GetRightVector(),LeftRightScaleFactor,true)
-				uevr.params.vr.set_mod_value("VR_MovementOrientation", "1")
+				uevr.params.vr.set_mod_value("VR_MovementOrientation", "0")
 			elseif not HeadBasedMovement then
 				--HandVector= right_hand_component:GetForwardVector()
 				right_hand_component:GetForwardVector()
@@ -493,7 +495,7 @@ if isBow then
 end
 end)
 
-uevr.sdk.callbacks.on_post_calculate_stereo_view_offset(function(device, view_index, world_to_meters, position, rotation, is_double)
+uevr.sdk.callbacks.on_early_calculate_stereo_view_offset(function(device, view_index, world_to_meters, position, rotation, is_double)
 	--print(DecoupledYawCurrentRot)
 local pawn=api:get_local_pawn(0)
 if isRiding and FirstPersonRiding then
@@ -507,6 +509,11 @@ if isRiding and FirstPersonRiding then
 	position.z=NewLoc.z +10
 	--rotation=NewRot
 else
+	position.x=pawn:K2_GetActorLocation().x
+	position.y=pawn:K2_GetActorLocation().y
+	position.z=pawn:K2_GetActorLocation().z+70
+
+
 	--pawn.Mesh:SetVisibility(false,true)
 end
 	

@@ -242,7 +242,71 @@ function GetCurrentWeaponMesh(dpawn)
 		return WeaponMesh
 	
 end
- 
+function GetCurrentOffhandMesh(dpawn)
+	--local function update_weapon_offset(Body_mesh)
+	
+    if not dpawn and not dpawn.WeaponsPairingComponent then print("nil") return end
+	
+	
+   -- local attach_socket_name = weapon_mesh.AttachSocketName
+		local PairingComponent= pawn.WeaponsPairingComponent
+	
+		local OffhandM=nil
+	
+	--x=pitch 
+	--local PairingComponentsOut = {}
+	
+	
+	
+	
+	
+	
+	
+		--ResetShotArrows()
+		if not isRiding then
+			if PairingComponent.ShieldActor~=nil then
+				if PairingComponent.ShieldActor.MainStaticMeshComponent.AttachSocketName:to_string()=="Shield_Socket" then
+					OffhandM=PairingComponent.ShieldActor.MainStaticMeshComponent
+						if isWeaponDrawn and not isBow then
+							OffhandM:SetVisibility(true, true)
+							--UEVR_UObjectHook.get_or_add_motion_controller_state(ShieldMesh):set_permanent(true)
+							--ShieldMesh:SetRenderInMainPass(true)
+						else OffhandM:SetVisibility(false, true)
+							--UEVR_UObjectHook.get_or_add_motion_controller_state(ShieldMesh):set_permanent(false)
+							--ShieldMesh:SetRenderInMainPass(false)
+						end
+						if isBow then OffhandM:SetVisibility(false, true) end
+		--			print("foundShield")
+				--	UEVR_UObjectHook.get_or_add_motion_controller_state(ShieldMesh):set_hand(0)
+				--	UEVR_UObjectHook.get_or_add_motion_controller_state(ShieldMesh):set_rotation_offset(Vector3f.new(math.pi,math.pi,0))
+				--	UEVR_UObjectHook.get_or_add_motion_controller_state(ShieldMesh):set_location_offset(Vector3f.new(2,-6,-30))
+					
+				end
+				
+			elseif PairingComponent.TorchActor~=nil then
+				if PairingComponent.TorchActor.StaticMesh_Component~=nil then
+					OffhandM=PairingComponent.TorchActor.StaticMesh_Component
+						if isWeaponDrawn and not isBow then
+							OffhandM:SetVisibility(true, true)
+							--UEVR_UObjectHook.get_or_add_motion_controller_state(ShieldMesh):set_permanent(true)
+							--ShieldMesh:SetRenderInMainPass(true)
+						else OffhandM:SetVisibility(false, true)
+							--UEVR_UObjectHook.get_or_add_motion_controller_state(ShieldMesh):set_permanent(false)
+							--ShieldMesh:SetRenderInMainPass(false)
+						end
+						if isBow then OffhandM:SetVisibility(false, true) end
+		--			print("foundShield")
+				--	UEVR_UObjectHook.get_or_add_motion_controller_state(ShieldMesh):set_hand(0)
+				--	UEVR_UObjectHook.get_or_add_motion_controller_state(ShieldMesh):set_rotation_offset(Vector3f.new(math.pi,math.pi,0))
+				--	UEVR_UObjectHook.get_or_add_motion_controller_state(ShieldMesh):set_location_offset(Vector3f.new(2,-6,-30))
+					
+				end
+				
+			end
+		end	
+		return OffhandM
+	
+end 
  
 
 function HandleCamera()

@@ -141,7 +141,11 @@ local RightController=		 uevr.params.vr.get_right_joystick_source()
 function UpdateRagdolls(dDelta)
 	if #RagdolledNPCs> 0 then
 		RagdollT = RagdollT + dDelta
-		local Blend = 1 - RagdollT
+		local Blend = 0
+		if RagdollT<0.5 then
+			Blend = RagdollT
+		else Blend = 1-RagdollT
+		end
 		
 		
 		
@@ -281,7 +285,7 @@ function Melee(pawn,player,engine,delta)
 					--pawn.WeaponsPairingComponent.WeaponActor.VHitBox.RelativeLocation.X=-40
 					--AttackCount=AttackCount+delta
 				else	
-					pawn.WeaponsPairingComponent.WeaponActor.VHitBox.RelativeLocation.X=10+ExtraBlockRange
+					pawn.WeaponsPairingComponent.WeaponActor.VHitBox.RelativeLocation.X=00+ExtraBlockRange
 					BoxX=10+ExtraBlockRange
 					BoxZ=1
 				end
@@ -332,11 +336,12 @@ function Melee(pawn,player,engine,delta)
 							if comp:GetOwner().bIsEquipped ==nil then
 								ActorFound=true
 								SendAttack=false
-								comp:GetOwner().Mesh:SetAllBodiesBelowSimulatePhysics("spine_01",true,false)
-								local ForceVec = kismet_math_library:Subtract_VectorVector(right_hand_component:K2_GetComponentLocation(), comp:GetOwner().Mesh:K2_GetComponentLocation())
 								
-								comp:GetOwner().Mesh:AddImpulse(ForceVec*-10,"spine_02",true)
+								comp:GetOwner().Mesh:SetAllBodiesBelowSimulatePhysics("spine_01",true,false)
+								local ForceVec = kismet_math_library:Subtract_VectorVector(right_hand_component:K2_GetComponentLocation(), comp:GetOwner().Mesh:K2_GetComponentLocation())								
+								comp:GetOwner().Mesh:AddImpulse(ForceVec*-10,"spine_02",false)
 								table.insert(RagdolledNPCs,comp:GetOwner().Mesh)
+								
 								if  HitBoxReset and PosDiffWeaponHand>MeleePower*1.7 then
 									HitBoxReset=false
 									SendAttack=false	
@@ -401,6 +406,16 @@ function Melee(pawn,player,engine,delta)
 						if comp:GetOwner().bIsEquipped ==nil then
 							ActorFound=true
 							SendAttack=false
+							
+							
+							comp:GetOwner().Mesh:SetAllBodiesBelowSimulatePhysics("spine_01",true,false)
+								local ForceVec = kismet_math_library:Subtract_VectorVector(right_hand_component:K2_GetComponentLocation(), comp:GetOwner().Mesh:K2_GetComponentLocation())								
+								comp:GetOwner().Mesh:AddImpulse(ForceVec*-10,"spine_02",false)
+								table.insert(RagdolledNPCs,comp:GetOwner().Mesh)
+								
+							
+							
+							
 							if  HitBoxReset and PosDiffSecondaryHand>MeleePower*1.7 then
 								HitBoxReset=false
 								SendAttack=false	
@@ -477,6 +492,10 @@ function Melee(pawn,player,engine,delta)
 			--HitBoxComponent,BodyInstance.CollisionResponses.ResponseToChannels
 			HitBoxComponent:GetOverlappingComponents(_ShieldComp)
 			
+			
+			
+			
+			
 			for i, comp in ipairs(_ShieldComp) do
 				
 			
@@ -484,6 +503,12 @@ function Melee(pawn,player,engine,delta)
 						-- print(comp:GetOwner():get_fname():to_string())
 						if comp:GetOwner():GetOwner()~=nil then
 							if not string.find(comp:GetOwner():GetOwner():get_fname():to_string(),"Player") then	
+								
+								comp:GetOwner().Mesh:SetAllBodiesBelowSimulatePhysics("spine_01",true,false)
+								local ForceVec = kismet_math_library:Subtract_VectorVector(right_hand_component:K2_GetComponentLocation(), comp:GetOwner().Mesh:K2_GetComponentLocation())								
+								comp:GetOwner().Mesh:AddImpulse(ForceVec*-10,"spine_02",false)
+								table.insert(RagdolledNPCs,comp:GetOwner().Mesh)
+								
 								
 								print(comp:GetOwner():GetOwner():get_fname():to_string())
 							--	if comp:GetOwner().bIsEquipped ~=nil then

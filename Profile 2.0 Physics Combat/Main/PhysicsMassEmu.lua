@@ -279,7 +279,8 @@ function ConfigureConstrainMeshes(bShow,ARel, BRel)
 		AnchorMeshL.BodyInstance.bAutoWeld=false
 		--AnchorMesh:AddTickPrerequisiteActor(AnchorMesh:GetOwner())
 		
-		
+		AffectedMesh:SetCollisionObjectType(30)
+		AffectedMeshL:SetCollisionObjectType(31)
 		
 		
 		--AffectedMesh.RelativeScale3D.X = 2
@@ -353,7 +354,7 @@ end
  
 		AffectedMesh:SetSimulatePhysics(false)	
 		--AffectedMesh:SetCollisionEnabled(1)
-		AffectedMesh:SetCollisionObjectType(50)
+		AffectedMesh:SetCollisionObjectType(30)
 		AffectedMesh:SetCollisionProfileName("IgnoreAll")
 		AffectedMesh:SetCollisionResponseToChannel(4,0)
 		AffectedMesh:SetCollisionResponseToChannel(2,0)
@@ -415,7 +416,7 @@ function SetItemToConstrain(dWpnMesh,Ddelta)
 			
 			ReleaseCooldownR=0
 		--	AfMesh:SetCollisionEnabled(0)
-			AfMesh:SetTickGroup(0)
+			--AfMesh:SetTickGroup(0)
 			AfMesh.bAbsoluteScale=true
 			--AnchorMesh:DetachFromParent(true)
 			InitRelease=false
@@ -433,8 +434,13 @@ function SetItemToConstrain(dWpnMesh,Ddelta)
 		--	AffectedMesh.RelativeScale3D.X = 1/50*BoxExtend.X*0.7
 		--	AffectedMesh.RelativeScale3D.Y = 1/50*BoxExtend.Z--BoxExtend.Y*0.5
 		--	AffectedMesh.RelativeScale3D.Z = 1/50*BoxExtend.Y*0.8--*BoxExtend.Z
-			AfMesh:SetCollisionProfileName("IgnoreAll")	
-			AfMesh:SetCollisionResponseToChannel(50,0)
+			--AfMesh:SetCollisionProfileName("IgnoreAll")	
+			
+			AfMesh:SetCollisionEnabled(2)
+			AfMesh:SetCollisionProfileName("VPPhysicsActorIgnoreCamera")
+			--AfMesh:SetCollisionResponseToAllChannels(0)
+			AfMesh:SetCollisionResponseToChannel(30,0)
+			AfMesh:SetCollisionResponseToChannel(31,2)
 			AfMesh:SetCollisionResponseToChannel(4,0)
 			AfMesh:SetCollisionResponseToChannel(1,0)
 			AfMesh:SetCollisionResponseToChannel(2,0)
@@ -458,14 +464,15 @@ function SetItemToConstrain(dWpnMesh,Ddelta)
 				local Rot= right_hand_component:K2_GetComponentRotation() 
 				Rot.Yaw = Rot.Yaw-90
 			--	AfMesh:K2_SetWorldRotation(Rot,false,ReusableHit,true)
-				AfMesh:SetCollisionEnabled(1)
+				--AfMesh:SetCollisionEnabled(1)
 				AfMesh:SetCollisionProfileName("VPPhysicsActorIgnoreCamera")	
-				AfMesh:SetCollisionResponseToChannel(50,0)
+				AfMesh:SetCollisionResponseToChannel(31,2)
+				AfMesh:SetCollisionResponseToChannel(30,0)
 				AfMesh:SetCollisionResponseToChannel(4,0)
 				AfMesh:SetCollisionResponseToChannel(1,0)
 				AfMesh:SetCollisionResponseToChannel(2,0)
 				AfMesh:SetEnableGravity(true)
-				AfMesh:SetSimulatePhysics(true)
+				--AfMesh:SetSimulatePhysics(true)
 			AffectedMesh.RelativeScale3D.X = 1/50*15
 		    AffectedMesh.RelativeScale3D.Y = 1/50*1
 		    AffectedMesh.RelativeScale3D.Z = 1/50*10
@@ -489,6 +496,7 @@ function SetItemToConstrain(dWpnMesh,Ddelta)
 			AffectedMesh.RelativeScale3D.X = 1/50*10
 		    AffectedMesh.RelativeScale3D.Y = 1/50*1
 		    AffectedMesh.RelativeScale3D.Z = 1/50*10
+			
 		end
 		
 		
@@ -499,7 +507,7 @@ function SetItemToConstrain(dWpnMesh,Ddelta)
 		end
 		AnchorMesh:SetCollisionProfileName("IgnoreAll")
 		AffectedMesh:SetCollisionProfileName("IgnoreAll")
-		RHandM:SetCollisionObjectType(50)
+		RHandM:SetCollisionObjectType(30)
 		--AffectedMesh:SetCollisionObjectType(2)
 		AffectedMesh:SetCollisionResponseToChannel(4,0)
 --		if AffectedMesh:GetCollisionProfileName():to_string()~= "IgnoreAll" then
@@ -517,7 +525,7 @@ function SetItemToConstrain(dWpnMesh,Ddelta)
 		end
 		AnchorMeshL:SetCollisionProfileName("IgnoreAll")
 		AffectedMeshL:SetCollisionProfileName("IgnoreAll")
-		LHandM:SetCollisionObjectType(50)
+		LHandM:SetCollisionObjectType(30)
 		--AffectedMesh:SetCollisionObjectType(2)
 		AffectedMeshL:SetCollisionResponseToChannel(4,0)
 --		if AffectedMesh:GetCollisionProfileName():to_string()~= "IgnoreAll" then
@@ -527,10 +535,12 @@ function SetItemToConstrain(dWpnMesh,Ddelta)
 --		end
 		AffectedMeshL:SetCollisionResponseToChannel(2,0)
 	--	AffectedMesh:SetCollisionResponseToChannel(0,0)
-		AffectedMeshL:SetCollisionResponseToChannel(5,0)
+		AffectedMeshL:SetCollisionResponseToChannel(5,2)
 		AffectedMeshL:SetCenterOfMass(Vector3d.new(0,0,20),"Root")
-		
-		
+		AffectedMeshL.RelativeScale3D.X = 1/50*1
+		 AffectedMeshL.RelativeScale3D.Y = 1/50*20
+		 AffectedMeshL.RelativeScale3D.Z = 1/50*6
+		AffectedMeshL:SetVisibility(false,false)
 		
 	--	print("Setting AfMesh")	
 	--	AffectedMesh:SetSimulatePhysics(true)	
@@ -565,7 +575,7 @@ function CounterMoveAffected(pawn,dPos)
 		
 		FinalLoc = AnchorMeshLoc+PawnLocDiff*1
 		AnchorMesh:K2_SetWorldLocation(FinalLoc,false,{},false)
-		FinalLocL = AnchorMeshLocL+PawnLocDiff*2
+		FinalLocL = AnchorMeshLocL+PawnLocDiff*1
 		AnchorMeshL:K2_SetWorldLocation(FinalLocL,false,{},false)
 	end
 	PawnLocLast=PawnLoc
@@ -646,16 +656,16 @@ end
 			
 			if right_hand_Constraint~=nil then	
 				print("COnfighre ConstarintCOmp")
-				local PowerMaxLinear		=1500/100*100	--1000+(Stats.Str*700 + 700  * StrDiff	)
-				local InForceLinear 		=15505/100*150 	--PowerMaxLinear/2 --(600 to 12000) --if PowerMaxLinear> 30 then PowerMaxLinear = 30 end
-				local VeloMaxLinear 		=222--PowerMaxLinear/8   --1/AnchLocDist*10--PowerMaxLinear/Stats.ReqStr
+				local PowerMaxLinear		=800/100*100	--1000+(Stats.Str*700 + 700  * StrDiff	)
+				local InForceLinear 		=40005/100*150 	--PowerMaxLinear/2 --(600 to 12000) --if PowerMaxLinear> 30 then PowerMaxLinear = 30 end
+				local VeloMaxLinear 		=2000000--1/AnchLocDist*10--PowerMaxLinear/Stats.ReqStr
 				local MinPowerLinear 		=1
-				local PowerMaxAngular	    =500
+				local PowerMaxAngular	    =160
 				if WpnMesh~=nil then
 				--	PowerMaxAngular = 15+ (Stats.Str*14) + 14*StrDiff
 				end
 				local MinPowerAngular		=10
-				local VeloMaxAngular		=  PowerMaxAngular/20
+				local VeloMaxAngular		=  PowerMaxAngular/10
 				local PowerWantedAngular    =0
 				right_hand_Constraint_parent:SetLinearXLimit(1,75)
 				right_hand_Constraint_parent:SetLinearYLimit(1,75)
@@ -698,7 +708,7 @@ end
 				right_hand_Constraint:SetLinearDriveParams(PowerMaxLinear,VeloMaxLinear,InForceLinear)	---(200,10,600000)  -- Stiffness,Damping,InForceLimit
 			--	right_hand_Constraint:SetLinearVelocityDrive(false,false,false)
 			--	right_hand_Constraint:SetLinearPositionDrive(false,false,false)
-				right_hand_Constraint:SetLinearVelocityDrive(false,false,false)
+				right_hand_Constraint:SetLinearVelocityDrive(true,true,true)
 				right_hand_Constraint:SetLinearPositionDrive(true,true,true)
 	--			right_hand_Constraint:SetLinearPlasticity(false,10,1)  -- trheshold, type
 	--			
@@ -708,6 +718,12 @@ end
 	--			
 	--			
 	--			--right_hand_Constraint:SetContactTransferScale(0)
+				left_hand_Constraint:SetLinearXLimit(0,0)
+				left_hand_Constraint:SetLinearYLimit(0,0)
+				left_hand_Constraint:SetLinearZLimit(0,0)
+				
+	
+	
 				left_hand_Constraint:SetAngularSwing1Limit(0,20)
 				left_hand_Constraint:SetAngularSwing2Limit(0,20)
 				left_hand_Constraint:SetAngularTwistLimit (0,20)
@@ -719,6 +735,9 @@ end
 				left_hand_Constraint:SetAngularVelocityDriveSLERP(true)
 				left_hand_Constraint:SetAngularOrientationDrive(true,true)
 				left_hand_Constraint:SetAngularDriveParams(PowerMaxAngular,VeloMaxAngular,00)		--(22,5,100)
+				left_hand_Constraint.ConstraintInstance.ProfileInstance.LinearLimit.bSoftConstraint=false
+				left_hand_Constraint.ConstraintInstance.bScaleLinearLimits=false
+				
 				--left_hand_Constraint:SetLinearDriveParams(8000,1000,4000)
 				left_hand_Constraint:SetLinearDriveParams(PowerMaxLinear,VeloMaxLinear,InForceLinear)	---(200,10,600000)  -- Stiffness,Damping,InForceLimit
 			--	left_hand_Constraint:SetLinearVelocityDrive(false,false,false)
@@ -935,15 +954,23 @@ function UpdatePhysicsConstraintLogic(pawn,world_context,ddelta)
 							Grabbed=true	
 							--RHandM:WakeAllRigidBodies()
 							--LHandM:WakeAllRigidBodies()
-							-- SetItemToConstrain(WpnMesh,ddelta)
+							SetItemToConstrain(WpnMesh,ddelta)
 							ConfigureConstraintComp(pawn)
 							AffectedMesh:SetEnableGravity(false)
 							
 						
 							WpnMesh:K2_SetWorldLocation(right_hand_component:K2_GetComponentLocation()+Vector3d.new(0,0,0),false,ReusableHit,true)	
+							--WpnMesh:K2_SetWorldLocation(right_hand_component:K2_GetComponentLocation()+Vector3d.new(0,0,0),false,ReusableHit,true)	
 							local CurrentRRot = right_hand_component:K2_GetComponentRotation()	
+							local hand_quat = kismet_math_library:Conv_RotatorToQuaternion(CurrentRRot)
+							local offset_rot =right_hand_component:K2_GetComponentRotation()
+							offset_rot.Pitch=0
+							offset_rot.Roll=80
+							offset_rot.Yaw = 80
 							
-							--WpnMesh:K2_SetWorldRotation(CurrentRRot,false,ReusableHit,true)
+							
+							
+							WpnMesh:K2_SetWorldRotation(offset_rot,false,ReusableHit,true)
 							
 							--right_hand_Constraint:AddTickPrerequisiteActor(pawn)
 							--AffectedMesh.bAbsoluteLocation=true
@@ -1001,7 +1028,7 @@ function UpdatePhysicsConstraintLogic(pawn,world_context,ddelta)
 							---NEED TO ADD LOGIC FOR WEAPON UNSHEATHED EMPTY HAND:
 						elseif not rShoulder and Grabbed then
 								Grabbed=false
-								-- SetItemToConstrain(WpnMesh,ddelta)
+								SetItemToConstrain(WpnMesh,ddelta)
 								-- WpnMesh:WakeAllRigidBodies()
 								right_hand_Constraint:BreakConstraint()
 								right_hand_Constraint_parent:BreakConstraint()
@@ -1019,7 +1046,7 @@ function UpdatePhysicsConstraintLogic(pawn,world_context,ddelta)
 								
 								right_hand_Constraint:SetConstrainedComponents(AnchorMesh,"None",AffectedMesh,"None")
 								--RHandM.RelativeRotation.Yaw = -90
-								--right_hand_Constraint:SetConstraintReferencePosition(1,Vector3d.new(5,0,0))--BoxExtend.Y*0.8))
+								right_hand_Constraint:SetConstraintReferencePosition(1,Vector3d.new(5,0,0))--BoxExtend.Y*0.8))
 								--right_hand_Constraint:SetConstraintReferenceOrientation(0,Vector3d.new(1,0,0),Vector3d.new(0,0,1))	
 								
 						end
@@ -1070,7 +1097,7 @@ function UpdatePhysicsConstraintLogic(pawn,world_context,ddelta)
 						--AffectedMeshL:K2_SetWorldLocation(left_hand_component:K2_GetComponentLocation()+Vector3d.new(0,0,0),false,ReusableHit,true)	
 					
 						left_hand_Constraint:SetConstrainedComponents(AnchorMeshL,"None",AffectedMeshL,"None")
-						left_hand_Constraint:SetConstraintReferencePosition(0,Vector3d.new(0,0,0))	
+						left_hand_Constraint:SetConstraintReferencePosition(1,Vector3d.new(5,0,0))	
 						
 						
 					end

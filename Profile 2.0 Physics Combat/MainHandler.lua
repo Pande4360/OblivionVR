@@ -221,9 +221,54 @@ function UpdateInput(state,cpawn)
 		--unpressButton(state,XINPUT_GAMEPAD_X)
 		--state.Gamepad.bLeftTrigger=0
 		--state.Gamepad.bRightTrigger=0
-		-- state.Gamepad.sThumbLX=0
-		-- state.Gamepad.sThumbLY=0
+		if not isSprinting then
+		 state.Gamepad.sThumbLX=0
+		 state.Gamepad.sThumbLY=0
+		end
 	end
+--		if not isSprinting  then
+--			--state.Gamepad.sThumbLX=0
+--			--state.Gamepad.sThumbLY=0
+--			LeftRightScaleFactor= ThumbLX/32767		
+--			ForwardBackwardScaleFactor = ThumbLY/32767
+--			--pawn.Controller.ControlRotation.Yaw = hmd_component:K2_GetComponentRotation().Yaw
+--			--vr.recenter_view()
+--			if HeadBasedMovement and hmd_component~=nil then
+--				--HandVector= right_hand_component:GetForwardVector()
+--				hmd_component:GetForwardVector()
+--								
+--				cpawn:AddMovementInput(hmd_component:GetForwardVector(),ForwardBackwardScaleFactor,true)
+--				cpawn:AddMovementInput(hmd_component:GetRightVector(),LeftRightScaleFactor,true)
+--				uevr.params.vr.set_mod_value("VR_MovementOrientation", "0")
+--			elseif not HeadBasedMovement then
+--				--HandVector= right_hand_component:GetForwardVector()
+--				right_hand_component:GetForwardVector()
+--									
+--				cpawn:AddMovementInput(right_hand_component:GetForwardVector(),ForwardBackwardScaleFactor,true)
+--				cpawn:AddMovementInput(right_hand_component:GetRightVector(),LeftRightScaleFactor,true)
+--				uevr.params.vr.set_mod_value("VR_MovementOrientation", "0")
+--			end
+--		end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	
 	if DPAD_Up   
