@@ -1,5 +1,5 @@
 {
-    "DarkerDarks": true,
+    "DarkerDarks": false,
     "Enable_Lumen_Indoors": false,
     "Extra_Block_Range": 0,
     "Faster_Projectiles": false,
@@ -7,6 +7,7 @@
     "Holster_Haptic_Feedback": false,
     "Melee_Power": 709,
     "Movement": 1,
+    "RadialQuickMenu": true,
     "Reticle Always On": true,
     "ReticleAlwaysOn": true,
     "Snap_Turn": false,
@@ -15,5 +16,6 @@
     "UI follows View": false,
     "UI_Follow_View": true,
     "UI_Follows_View": true,
-    "Visible_Helmet": false
+    "Visible_Helmet": false,
+    "ManageLighting": true
 }
